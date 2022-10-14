@@ -1,10 +1,10 @@
 ---
-title: "AKS Cluster Deployment Configuration"
+title: "Azure Kubernetes Service on Arm-based Ampere Altra processors"
 type: docs
 hide_summary: true
 weight: 2
 description: >
-    Learning path for software developers about how to Deploy Arm based AKS cluster.
+    Learning path for software developers about how to deployment of WordPress (with MySQL) on Azure Kubernetes Service (AKS).
 ---
 
 ## Learning Objectives 
