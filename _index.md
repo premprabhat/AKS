@@ -21,8 +21,8 @@ By the end of this learning path, you will be able to:
 
 |          Type | Content                       |
 | ---           | ---                                 |
-| How-To        | [Deploying & Connecting to the Cluster](/cluster_deployment.md)) |
-| How-To        | [Deploying WordPress](/deploy_wordpress.md)
+| How-To        | [Deploying & Connecting to the Cluster](/cluster_deployment.md) |
+| How-To        | [Deploying WordPress](/deploy_wordpress.md) |
 
 ## References and Documentation
 
