@@ -4,14 +4,14 @@ type: docs
 hide_summary: true
 weight: 2
 description: >
-    Learning path for software developers about how to deployment of WordPress (with MySQL) on Azure Kubernetes Service (AKS).
+    Learning path for software developers about how to deploy WordPress on Azure Kubernetes Service (AKS).
 ---
 
 ## Learning Objectives 
 
 By the end of this learning path, you will be able to:
 
-* Deploy WordPress (with MySQL) on Azure Kubernetes Service (AKS)
+* Deploy WordPress on Azure Kubernetes Service (AKS)
 
 ## Pre-requisites
 
@@ -21,9 +21,7 @@ By the end of this learning path, you will be able to:
 
 |          Type | Content                       |
 | ---           | ---                                 |
-| How-To        | [AKS Cluster Deployment Configuration](/cluster_deployment.md)
-| How-To        | [Deploying & Connecting to the Cluster](/deploy_and_connect.md) |
-| How-To        | [WordPress Deployment Files](/wordpress_deployment_files.md)
+| How-To        | [Deploying & Connecting to the Cluster](/cluster_deployment.md)) |
 | How-To        | [Deploying WordPress](/deploy_wordpress.md)
 
 ## References and Documentation
