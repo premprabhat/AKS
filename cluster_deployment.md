@@ -1,31 +1,114 @@
 ---
 processors : ["Neoverse-N1"]
 software : ["linux"]
-title: "AKS Cluster Deployment Configuration"
+title: "Deploy and connect to the AKS Cluster"
 type: docs
 weight: 3
 hide_summary: true
 description: >
-    Learn how to AKS Cluster Deployment Configuration.
+    Learn how to deploy and connect to the AKS Cluster.
 ---
 
 ## Pre-requisites
 
 * Physical machines or cloud nodes with Ubuntu installed.
-* Install 
+* Install Terraform, Kubectl and Azure CLI on Arm instance.
 
-## Build Nginx from source
+## Deploy the AKS cluster
 
-Then follow [this documentation](https://armkeil.blob.core.windows.net/developer/Files/pdf/white-paper/guidelines-for-deploying-nginx-plus-on-aws.pdf) to setup Basic static file server.
+*  AKS deployement configuration:
 
-### Steps in brief
+For AKS deployement the Terraform configuration is broken into four files: providers.tf, variables.tf, main.tf, and outputs.tf
 
-NOTE: The below mentioned steps are used to setup Basic static file server(upstreams).
-
-*  Switch to root user:
+Add the folowing code in **providers.tf** file
 
 ```console
-sudo su -
+terraform {
+  required_version = ">=1.0"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~>3.0"
+    }
+  }
+}
+provider "azurerm" {
+  features {}
+}
+```
+
+Add the folowing code in **variables.tf** file
+
+```console
+variable "agent_count" {
+  default = 3
+}
+variable "cluster_name" {
+  default = "arm-aks-cluster-demo"
+}
+variable "dns_prefix" {
+  default = "arm-aks"
+}
+variable "resource_group_location" {
+  default     = "eastus"
+  description = "Location of the resource group."
+}
+variable "resource_group_name_prefix" {
+  default     = "arm-aks-demo-rg"
+  description = "Prefix of the resource group name that's combined with a random ID so name is unique in your Azure subscription."
+}                                                                                                                 
+variable "ssh_public_key" {
+  default = "~/.ssh/id_rsa.pub"
+}
+```
+
+Add the folowing code in **outputs.tf** file
+
+```console
+output "resource_group_name" {
+  value = azurerm_resource_group.rg.name
+}
+```
+
+Add the folowing code in **main.tf** file
+
+```console
+# Generate random resource group name
+resource "random_pet" "rg_name" {
+  prefix = var.resource_group_name_prefix
+}
+resource "azurerm_resource_group" "rg" {
+  location = var.resource_group_location
+  name     = random_pet.rg_name.id
+}
+resource "azurerm_kubernetes_cluster" "k8s" {
+  location            = azurerm_resource_group.rg.location
+  name                = var.cluster_name
+  resource_group_name = azurerm_resource_group.rg.name
+  dns_prefix          = var.dns_prefix
+  tags                = {
+    Environment = "Demo"
+  }
+  default_node_pool {
+    name       = "demopool"
+    vm_size    = "Standard_D2ps_v5"
+    node_count = var.agent_count
+  }                                                                                                 
+  linux_profile {
+    admin_username = "ubuntu"
+    ssh_key {
+      key_data = file(var.ssh_public_key)
+    }
+  }
+  identity {
+    type = "SystemAssigned"
+  }
+}
+}
 ```
 
 *  Set the below parameters:
