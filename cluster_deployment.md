@@ -111,57 +111,24 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 }
 ```
 
-*  Set the below parameters:
+* Log into Azure using the Azure CLI
 
 ```console
-sysctl net.ipv4.ip_local_port_range=”32768 60999”
-sysctl net.ipv4.tcp_max_syn_backlog=60999
-sysctl net.core.somaxconn=60999
-sysctl net.ipv4.tcp_autocorking=0
+az login
 ```
 
-* Add the following code in /etc/nginx/nginx.conf:
-
+* Deploy the cluster with Terraform
 ```console
-user www-data;
-worker_processes auto;
-worker_rlimit_nofile 1000000;
-pid /run/nginx.pid;
-events {
- worker_connections 1024;
- accept_mutex off;
- multi_accept off;
-}
-http {
- ##
- # Basic Settings
- ##
- sendfile on;
- tcp_nopush on;
- tcp_nodelay on;
- keepalive_timeout 75;
- keepalive_requests 1000000000;
- types_hash_max_size 2048;
- include /etc/nginx/mime.types;
- default_type application/octet-stream;
-
- ##
- # Logging Settings
- ##
-
- access_log off;
- # error_log off will not turn off error logs. Error logs will redirect to /usr/share/nginx/off
- # The below comes the closest to actually turning off error logs.
- error_log /dev/null crit;
- ##
- # Virtual Host Configs
- ##
- include /etc/nginx/conf.d/*.conf;
- include /etc/nginx/sites-enabled/*;
-}
+terraform init
 ```
 
-* Add the following code into /etc/nginx/conf.d/default.conf:
+* Deploy the cluster with Terraform
+```console
+terraform apply
+```
+Once it completes it will output the name of the resource group like this:
+
+* Download the cluster credentials so that we can use the kubectl command.
 
 ```console
 # HTTPS file server
