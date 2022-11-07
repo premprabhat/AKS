@@ -114,7 +114,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     type = "SystemAssigned"
   }
 }
-}
 ```
 
 * Log into Azure using the Azure CLI
