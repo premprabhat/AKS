@@ -145,6 +145,8 @@ Once it completes it will output the name of the resource group like this:
 ```console
 az aks get-credentials --resource-group arm-aks-demo-rg-calm-rabbit --name arm-aks-cluster-demo
 ```
+Here arm-aks-demo-rg-calm-rabbit is the name of the resource group.
+
 * Run the following command to see the status of the nodes. They should be in the ready state.
 
 ```console
