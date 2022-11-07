@@ -17,6 +17,7 @@ description: >
   ```console
   sudo apt install python3-pip -y
   pip3 install azure-cli
+  export PATH=$PATH:~/.local/bin
   ```
 
 ## Deploy the AKS cluster
