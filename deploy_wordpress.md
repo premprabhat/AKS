@@ -21,6 +21,7 @@ Add the folowing code in **kustomization.yaml** file
 
 ```console
 secretGenerator:
+- name: mysql-pass
   literals:
   - password=YourPasswordHere
 resources:
