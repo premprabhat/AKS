@@ -189,35 +189,32 @@ spec:
 * Log into Azure using the Azure CLI
 
 ```console
-az login
+kubectl apply -k ./
 ```
 
-* Initializes a working directory containing Terraform configuration files.
+* Check on the volume claims by running the following command:
 ```console
-terraform init
+kubectl get pvc
 ```
 
-* Deploy the cluster with Terraform
+* Check on the WordPress and MySQL pods by running the following command:
 ```console
-terraform apply
+kubectl get pods
 ```
-Once it completes it will output the name of the resource group like this:
 
-* Download the cluster credentials so that we can use the kubectl command.
-
-```console
-az aks get-credentials --resource-group arm-aks-demo-rg-calm-rabbit --name arm-aks-cluster-demo
-```
-* Run the following command to see the status of the nodes. They should be in the ready state.
+* Now that the pods are running, we can verify that the persistent volumes have been attached by running the following command:
 
 ```console
-kubectl get nodes
+kubectl get volumeattachments
 ```
-
-* Run the following command to see the current pods running on the cluster.
+* To get the external IP address of the WordPress deployment run the following command:
 
 ```console
-kubectl get pods -A
+kubectl get svc
 ```
+
+* Now use the external IP and open it in the browser. WordPress welcome screen will be displayed in the browser.
+
+
 
 [<-- Return to Learning Path](/content/en/cloud/clair/#sections)
