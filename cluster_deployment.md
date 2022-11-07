@@ -122,6 +122,11 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 az login
 ```
 
+* Create an SSH key pair.
+```console
+ssh-keygen -m PEM -t rsa -b 4096
+```
+
 * Initializes a working directory containing Terraform configuration files.
 ```console
 terraform init
