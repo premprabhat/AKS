@@ -186,7 +186,7 @@ spec:
           claimName: wp-pv-claim
 ```
 
-* Log into Azure using the Azure CLI
+* Now apply the configuration.
 
 ```console
 kubectl apply -k ./
