@@ -108,49 +108,82 @@ spec:
           claimName: mysql-pv-claim
 ```
 
-Add the folowing code in **outputs.tf** file
+Add the folowing code in **wordpress-deployment.yaml** file
 
 ```console
-output "resource_group_name" {
-  value = azurerm_resource_group.rg.name
-}
-```
-
-Add the folowing code in **main.tf** file
-
-```console
-# Generate random resource group name
-resource "random_pet" "rg_name" {
-  prefix = var.resource_group_name_prefix
-}
-resource "azurerm_resource_group" "rg" {
-  location = var.resource_group_location
-  name     = random_pet.rg_name.id
-}
-resource "azurerm_kubernetes_cluster" "k8s" {
-  location            = azurerm_resource_group.rg.location
-  name                = var.cluster_name
-  resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = var.dns_prefix
-  tags                = {
-    Environment = "Demo"
-  }
-  default_node_pool {
-    name       = "demopool"
-    vm_size    = "Standard_D2ps_v5"
-    node_count = var.agent_count
-  }                                                                                                 
-  linux_profile {
-    admin_username = "ubuntu"
-    ssh_key {
-      key_data = file(var.ssh_public_key)
-    }
-  }
-  identity {
-    type = "SystemAssigned"
-  }
-}
-}
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: wordpress
+    tier: frontend
+  type: LoadBalancer
+  loadBalancerSourceRanges: ["0.0.0.0/0"]
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-pv-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: managed-csi
+  resources:
+    requests:
+      storage: 20Gi                                                                                                                         
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+    spec:
+      containers:
+      - image: wordpress:6.0.2-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: WORDPRESS_DB_NAME
+          value: wordpressdb
+        - name: WORDPRESS_DB_USER
+          value: mysqluser
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wp-pv-claim
 ```
 
 * Log into Azure using the Azure CLI
