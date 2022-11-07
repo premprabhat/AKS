@@ -12,7 +12,9 @@ description: >
 ## Pre-requisites
 
 * Physical machines or cloud nodes with Ubuntu installed.
-* Install [Terraform](https://www.terraform.io/downloads) and [Kubectl](https://kubernetes.io/docs/tasks/tools/) on Arm instance.
+* An Azure portal account.
+* An [installation of Terraform](https://www.terraform.io/downloads).
+* [Installation of Kubectl](https://kubernetes.io/docs/tasks/tools/).
 * Install Azure CLI using the following command:
   ```console
   sudo apt install python3-pip -y
