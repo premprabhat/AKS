@@ -117,7 +117,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 az login
 ```
 
-* Deploy the cluster with Terraform
+* Initializes a working directory containing Terraform configuration files.
 ```console
 terraform init
 ```
@@ -131,41 +131,18 @@ Once it completes it will output the name of the resource group like this:
 * Download the cluster credentials so that we can use the kubectl command.
 
 ```console
-# HTTPS file server
-server {
- listen 443 ssl reuseport backlog=60999;
- root /usr/share/nginx/html;
- index index.html index.htm;
- server_name $hostname;
- ssl on;
- ssl_certificate /etc/nginx/ssl/ecdsa.crt;
- ssl_certificate_key /etc/nginx/ssl/ecdsa.key;
- ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384;
- location / {
-     limit_except GET {
-         deny all;
-     }
-     try_files $uri $uri/ =404;
- }
-}
+az aks get-credentials --resource-group arm-aks-demo-rg-calm-rabbit --name arm-aks-cluster-demo
 ```
-Here $hostname will be replaced with the DNS of the machine.
-
-Follow the instructions to [create](/key_and_certification.md) ECDSA key and certificate.
-
-NOTE: If you want you can change the content of your HTML file as per your choice.
-
-* Check the configuration for correct syntax run and then start Nginx Server using below commands:
+* Run the following command to see the status of the nodes. They should be in the ready state.
 
 ```console
-nginx -t -v
-systemctl start nginx
+kubectl get nodes
 ```
 
-* To verify the file server is running open the URL in your browser and now the content of your html file will be displayed:
+* Run the following command to see the current pods running on the cluster.
 
 ```console
-https://<IP>/
+kubectl get pods -A
 ```
 
 [<-- Return to Learning Path](/content/en/cloud/clair/#sections)
