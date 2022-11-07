@@ -62,7 +62,7 @@ variable "dns_prefix" {
   default = "arm-aks"
 }
 variable "resource_group_location" {
-  default     = "eastus"
+  default     = "eastus2"
   description = "Location of the resource group."
 }
 variable "resource_group_name_prefix" {
