@@ -12,7 +12,12 @@ description: >
 ## Pre-requisites
 
 * Physical machines or cloud nodes with Ubuntu installed.
-* Install Terraform, Kubectl and Azure CLI on Arm instance.
+* Install [Terraform](https://www.terraform.io/downloads) and [Kubectl](https://kubernetes.io/docs/tasks/tools/) on Arm instance.
+* Install Azure CLI using the following command:
+  ```console
+  sudo apt install python3-pip -y
+  pip3 install azure-cli
+  ```
 
 ## Deploy the AKS cluster
 
